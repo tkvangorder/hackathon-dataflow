@@ -3,3 +3,4 @@ data-flow-server/
 .metadata/
 .recommenders/
 .sonarlint/
+/data-flow-server.log
