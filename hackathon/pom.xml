@@ -47,6 +47,8 @@
 	<modules>
 		<module>hack-config</module>
 		<module>domain-events</module>
+		<module>source-customer</module>
+		<module>source-customer-address</module>
 		<module>source-order</module>
 		<module>source-order-item</module>
 		<module>source-payment</module>

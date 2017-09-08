@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.build.source.customer.dao.CustomerMapper">
+
+	<select id="getCustomerRecordCount" resultType="long">
+		select
+			count(*)
+		from omc.dbo.userdb cust
+		where
+			cust.modifiedDateTime &gt;= #{startDate} and cust.modifiedDateTime &lt;= #{endDate}
+	</select>
+
+	<resultMap id="customerMap" type="com.build.analytics.event.customer.CustomerDataEvent">
+		<id property="customerId" column="customerId" />
+		<result property="userLogin" column="buyerId"/>
+		<result property="firstName" column="firstName"/>
+		<result property="lastName" column="lastName"/>
+		<result property="email" column="email"/>
+		<result property="signUpSite" column="siteReg"/>
+		<result property="referredFrom" column="referredFrom"/>
+		<result property="isSubscriber" column="isSubscriber"/>
+		<result property="isMobile" column="mobileOptIn"/>
+		<result property="isPro" column="isPro"/>
+		<result property="isGuest" column="isGuest"/>
+		<result property="isLowRisk" column="isLowRisk"/>
+		<result property="isHighRisk" column="isHighRisk"/>
+		<result property="pricebookId" column="priceBookId"/>
+		<result property="pricebookName" column="priceBookName"/>
+		<result property="timestampRegistered" column="regDate"/>		
+		<result property="timestampEventCreated" column="timestampEventCreated"/>
+	</resultMap>
+	
+	<select id="selectCustomers"  resultMap="customerMap">
+		SELECT
+			cust.UserDbId customerId,
+			cust.BuyerId buyerId,
+			cust.FirstName firstName,
+			cust.LastName lastName,
+			cust.Email email,
+			isnull(NULLIF(cust.SiteReg, ''), 'Build') siteReg,
+			isnull(NULLIF(cust.ReferredFrom, ''), 'Other') referredFrom,
+			isnull(cust.Subscriber,0) isSubscriber,
+			isnull(cust.MobileOptIn,0) mobileOptIn,
+			CAST(
+				(SELECT count(proApp.id) from omc.dbo.pro_account_applications proApp where proApp.status = 'Accepted' and proApp.UserDBID = cust.userDBID) +
+				(SELECT count(proVw.CustomerId) from omc.dbo.vw_pro proVw where proVw.confirmed = 1 and subscribed = 1 and proVw.CustomerID = cust.userDBID)
+			as bit) isPro,
+			isnull(cust.is_guest,0) isGuest,
+			isnull(cust.LowRisk,0) isLowRisk,
+			isnull(cust.HighRisk,0) isHighRisk,
+			isnull(cust.PricebookId, 1) pricebookId,
+			isnull(pb.bookName, 'Default') pricebookName,
+			cust.RegDate regDate,
+			CURRENT_TIMESTAMP AS timestampEventCreated
+			
+		FROM
+			omc.dbo.userdb cust WITH (NOLOCK)
+			left outer join mmc.dbo.pricebook pb on pb.priceBookId = cust.PricebookId
+		where
+			cust.modifiedDateTime &gt;= #{startDate} and cust.modifiedDateTime &lt;= #{endDate}
+		
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: source-customer
+  cloud:
+    config:
+      #The label/branch that will be used to retrieve configuration from the configuration server.
+      label: master
+      name: source-customer,source-common
+      fail-fast: true
