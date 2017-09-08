@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.build</groupId>
+		<artifactId>api-parent</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>hackathon</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>hackathon</name>
+	<description>Spring Cloud Dataflow Hackathon</description>
+	<url>http://www.build.com/</url>
+	<organization>
+		<name>Build.com</name>
+		<url>http://www.build.com/</url>
+	</organization>
+	<inceptionYear>2017</inceptionYear>
+
+	<build>	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<modules>
+		<module>hack-config</module>
+		<module>domain-events</module>
+		<module>source-order</module>
+		<module>source-order-item</module>
+		<module>source-payment</module>
+		<module>source-charge</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.build</groupId>
+				<artifactId>domain-events</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>buildcom-release</name>
+			<url>http://artifactory-pr-1.build.internal:8081/artifactory/buildcom-release</url>
+		</repository>
+		<repository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>buildcom-snapshot</name>
+			<url>http://artifactory-pr-1.build.internal:8081/artifactory/buildcom-snapshot</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>buildcom-release</name>
+			<url>http://artifactory-pr-1.build.internal:8081/artifactory/buildcom-release</url>
+		</pluginRepository>
+		<pluginRepository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>buildcom-release</name>
+			<url>http://artifactory-pr-1.build.internal:8081/artifactory/buildcom-release</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>chico-artifactory-releases</name>
+			<url>http://artifactory-pr-1.build.internal:8081/artifactory/buildcom-maven-release</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>chico-artifactory-snapshots</name>
+			<url>http://artifactory-pr-1.build.internal:8081/artifactory/buildcom-maven-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+</project>

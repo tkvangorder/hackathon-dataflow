@@ -1,0 +1,6 @@
+logging:
+  level:
+    com.build.source.payment: INFO
+
+mybatis:
+  type-handlers-package: com.build.source.payment

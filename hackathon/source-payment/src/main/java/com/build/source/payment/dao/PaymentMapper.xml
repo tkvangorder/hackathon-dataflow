@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.build.source.payment.dao.PaymentMapper">
+
+	<resultMap id="paymentMap" type="com.build.analytics.event.order.PaymentDataEvent">
+		<id property="paymentId" column="paymentId"/>
+		<result property="orderId" column="orderId"/>
+		<result property="customerId" column="customerId"/>
+		<result property="paymentType" column="paymentType"/>
+		<result property="paymentAmount" column="paymentAmount"/>
+		<result property="addressIdBilling" column="addressId"/>
+		<result property="timestampRequested" column="dateRequested"/>
+		<result property="timestampReceived" column="dateReceived"/>
+		<result property="timestampEventCreated" column="timestampEventCreated"/>
+	</resultMap>
+	
+	<select id="selectPayments" resultMap="paymentMap">
+		SELECT
+			payment.id as paymentId,
+			payment.ordernumber AS orderId,
+			payment.userId AS customerId,
+			payment.type AS paymentType,
+			payment.amount AS paymentAmount,
+			payment.billingAddressId AS addressId,
+			payment.dateRequested AS dateRequested,
+			payment.dateReceived AS dateReceived,		
+			CURRENT_TIMESTAMP AS timestampEventCreated
+		FROM
+			omc.dbo.payments payment with(nolock)
+		WHERE
+			payment.DateRequested &gt;= #{startDate} and payment.DateRequested &lt;= #{endDate}		
+	</select>
+	
+</mapper>

@@ -1,0 +1,75 @@
+version: '2'
+
+networks:
+  build-docker-network:
+    driver: bridge
+
+volumes:
+  mongodata:
+  mongoconfig:
+  rabbitmq:
+  kafkalog:
+  zkconfig:
+  zkdata:
+
+services:
+  redis:
+    container_name: redis
+    image: redis:latest
+    networks:
+      - build-docker-network
+    ports:
+      - "6379:6379"
+  mongo:
+    container_name: mongo
+    image: mongo:3
+    networks:
+      - build-docker-network
+    ports:
+      - "27017:27017"
+    volumes:
+     - mongodata:/data/db
+     - mongoconfig:/data/configdb
+  rabbit:
+    container_name: rabbit
+    image: 'merapar/rabbitmq-docker'    
+    hostname: 'rabbitmq-docker'
+    networks:
+      - build-docker-network
+    environment:
+      - RABBITMQ_DEFAULT_VHOST=buildServices
+      - RABBITMQ_DEFAULT_USER=build
+      - RABBITMQ_DEFAULT_PASS=Password1
+    ports:
+      - "5672:5672"
+      - "15672:15672"  
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+  zookeeper:
+    container_name: zookeeper
+    image: wurstmeister/zookeeper:3.4.6
+    networks:
+      - build-docker-network
+    ports:
+      - "2181:2181"
+    volumes:
+      - zkconfig:/opt/zookeeper-3.4.6/conf
+      - zkdata:/opt/zookeeper-3.4.6/data
+  kafka:
+    container_name: kafka
+    image: "wurstmeister/kafka:0.10.2.1"
+    networks:
+      - build-docker-network
+    ports:
+      - "9092:9092"
+    links:
+      - zookeeper:zk
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ZOOKEEPER_CONNECT: zk:2181
+      KAFKA_LOG_DIRS: /kafka/kafka-logs
+      KAFKA_CREATE_TOPICS: "data-charge:20:1,data-customer:20:1,data-customer-address:20:1,data-order:20:1,data-order-item:20:1,data-payment:20:1"
+    volumes:
+      - kafkalog:/kafka
+

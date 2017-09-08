@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.build.source.orderitem.dao.OrderItemMapper">
+
+	<resultMap id="orderItemMap" type="com.build.analytics.event.order.OrderItemDataEvent">
+		<result property="legacyItemId" column="id"/>
+		<result property="orderId" column="orderId"/>
+		<result property="timestampOrdered" column="orderDate"/>
+		<result property="productVariationId" column="productVariationId"/>
+		<result property="productCode" column="productCode"/>
+		<result property="productManufacturerName" column="productManufacturer"/>
+		<result property="productVariationDescription" column="productVariationName"/>
+		<result property="unitPrice" column="unitPrice"/>
+		<result property="quantity" column="quantity"/>
+		<result property="timestampEventCreated" column="timestampEventCreated"/>		
+	</resultMap>
+	
+	<select id="selectOrderItems"  resultMap="orderItemMap">
+		SELECT
+			item.itemID AS id,
+			orders.ordernumber AS orderId,
+			orders.OrderDate AS orderDate,
+			item.uniqueID AS productVariationId,
+			item.productId AS productCode,
+			item.Manufacturer AS productManufacturer,
+			item.finish AS productVariationName,
+			item.unitPrice as unitPrice,
+			item.quantity as quantity,
+			CURRENT_TIMESTAMP AS timestampEventCreated			
+		FROM
+			omc.dbo.cart item with (nolock)
+			inner join omc.dbo.orders orders with (nolock) on item.cart_orderNumber = orders.ordernumber
+		where
+			orders.OrderDate &gt;= #{startDate} and orders.OrderDate &lt;= #{endDate}			
+	</select>
+</mapper>

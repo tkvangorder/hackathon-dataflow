@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          add-label-locations: false
+          search-locations: 'file:/Users/tyler.vangorder/devel_hack/hackathon/hack-config/config'
+server:
+  port: 8888

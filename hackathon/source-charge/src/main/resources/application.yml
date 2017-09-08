@@ -1,0 +1,6 @@
+logging:
+  level:
+    com.build.source.charge: info
+
+mybatis:
+  type-handlers-package: com.build.source.charge

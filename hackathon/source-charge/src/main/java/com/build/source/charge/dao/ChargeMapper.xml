@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.build.source.charge.dao.ChargeMapper">
+
+
+	<resultMap id="chargeMap" type="com.build.analytics.event.order.ChargeDataEvent">
+		<result property="chargeId" column="chargeId"/>
+		<result property="orderId" column="orderId"/>
+		<result property="paymentId" column="paymentId"/>
+		<result property="poNumber" column="poNumber"/>
+		<result property="chargeStatus" column="chargeSatus"/>
+		<result property="chargeType" column="chargeType"/>
+		<result property="chargeAmount" column="chargeAmount"/>
+		<result property="taxAmount" column="taxAmount"/>
+		<result property="shippingAmount" column="shippingAmount"/>
+		<result property="timestampRequested" column="timestampRequested"/>
+		<result property="timestampIssued" column="timestampIssued"/>
+		<result property="nameRequestedBy" column="nameRequestedBy"/>
+		<result property="nameApprovedBy" column="nameApprovedBy"/>
+		<result property="reasonNotes" column="reasonNotes"/>
+		<result property="reasonClass" column="reasonClass"/>
+		<result property="siteName" column="siteNanme"/>
+		<result property="timestampEventCreated" column="timestampEventCreated"/>		
+	</resultMap>
+	
+	<select id="selectCharges" resultMap="chargeMap">
+		SELECT
+			charge.transid AS chargeId,
+			charge.ordernumber AS orderId,
+			charge.refTransId AS paymentId,
+			charge.poNumber as poNumber,
+			charge.status AS chargeSatus,
+			charge.type AS chargeType,
+			charge.amount AS chargeAmount,
+			charge.tax AS taxAmount,
+			charge.shipping AS shippingAmount,
+			charge.dateRequested AS timestampRequested,
+			charge.dateIssued AS timestampIssued,
+			charge.requestedBy AS nameRequestedBy,
+			charge.approvedBy AS nameApprovedBy,
+			charge.reason AS reasonNotes,
+			charge.reasonClass AS reasonClass,
+			charge.siteName AS siteName,
+			CURRENT_TIMESTAMP AS timestampEventCreated
+		FROM
+			omc.dbo.charges charge WITH(NOLOCK)
+		WHERE
+			charge.daterequested &gt;= #{startDate} and charge.daterequested &lt;= #{endDate}
+	</select>
+	
+
+</mapper>

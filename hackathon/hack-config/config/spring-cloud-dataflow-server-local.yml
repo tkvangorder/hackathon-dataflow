@@ -1,0 +1,17 @@
+server:
+  port: 1234
+
+endpoints:
+  env:
+    enabled: true
+  shutdown:
+    enabled: true
+  
+spring:
+  cloud:
+    deployer:
+      local:
+       workingDirectoriesRoot: /Users/tyler.vangorder/devel_hack/deploy
+       deleteFilesOnExit: true
+
+ 
