@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:sqlserver://cic-lnr-wh-1.build.internal;selectMethod=direct;applicationName=omc;sendStringParametersAsUnicode=false
-    username: svc_warehouse
-    password: 'TvG12#$iT4uD'
+    username: 
+    password: 
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     # We have configured the pool to test if the connection is still valid. We are using the tomcat connection pool which also
     # has a validation interval. The logic is executed when the connection is retrieved from the pool. If the connection has
