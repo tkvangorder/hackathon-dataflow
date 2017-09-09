@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:sqlserver://chico-db-dev.build.internal\CICDEV2;selectMethod=direct;applicationName=omc;sendStringParametersAsUnicode=false
-    username: 'wbsrvr_mmc'
-    password: 'Build12Dot24Cow!'
+    username: 
+    password: 
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     # We have configured the pool to test if the connection is still valid. We are using the tomcat connection pool which also
     # has a validation interval. The logic is executed when the connection is retrieved from the pool. If the connection has
